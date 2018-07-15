@@ -15,7 +15,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/TemplateEngineFactory/TemplateEngine.php');
-require_once(dirname(__FILE__) . '/pug-loader.php');
+include 'vendor/autoload.php';
 
 class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableModule
 {
@@ -51,7 +51,7 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
     {
       $cachePath = $this->wire('config')->paths->assets . 'cache/' . self::COMPILE_DIR;
       $options =
-      $this->pug = new Pug\Pug(array(
+      $this->pug = new Pug(array(
         'cache' => ($this->getConfig('use_cache') ? $cachePath : null),
         'prettyprint' => $this->getConfig('prettyprint'),
         'stream' => '.' . $this->getConfig('stream'),
@@ -75,6 +75,7 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
     {
       $config = parent::getDefaultConfig();
       return array_merge($config, array(
+        'template_files_suffix' => 'pug',
         'prettyprint' => 0,
         'stream' => 'pug.stream',
         'api_vars_available' => 1
@@ -104,7 +105,7 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
     {
       try {
         $path = $this->getTemplatesPath() . $this->getFilename();
-        return $this->pug->render($path, $this->variables);
+        return $this->pug->renderFile($path, $this->variables);
       } catch (Exception $e) {
         throw new WireException($e->getMessage());
       }
@@ -136,7 +137,7 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
      *
      * @param Pug_Environment $pug
      */
-    protected function ___initPug(Pug\Pug $pug) {}
+    protected function ___initPug(Pug $pug) {}
 
 
 
@@ -154,7 +155,7 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
       return array(
         'title' => 'Template Engine Pug',
         'summary' => 'Pug/Jade templates for the TemplateEngineFactory',
-        'version' => 106,
+        'version' => 107,
         'author' => 'Diktus Dreibholz (dreerr)',
         'href' => 'https://processwire.com/talk/topic/11386-module-jade-for-the-templateenginefactory/',
         'singular' => false,
