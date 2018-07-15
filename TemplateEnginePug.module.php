@@ -4,7 +4,7 @@
  *
  * @author Diktus Dreibholz <dreerr@gmail.com>
  * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License, version 2
- * @version 1.0.7
+ * @version 1.0.8
  *
  * ProcessWire 2.x
  * Copyright (C) 2014 by Ryan Cramer
@@ -14,7 +14,9 @@
  *
  */
 
+
 require_once(dirname(dirname(__FILE__)) . '/TemplateEngineFactory/TemplateEngine.php');
+
 include 'vendor/autoload.php';
 
 class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableModule
@@ -53,10 +55,9 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
       $options =
       $this->pug = new Pug(array(
         'cache' => ($this->getConfig('use_cache') ? $cachePath : null),
+        'keepBaseName' => true,
         'prettyprint' => $this->getConfig('prettyprint'),
-        'stream' => '.' . $this->getConfig('stream'),
-        'phpSingleLine' => true,
-        'keepBaseName' => true
+        'stream' => '.' . $this->getConfig('stream')
         ));
       if ($this->getConfig('api_vars_available')) {
         foreach (Wire::getFuel() as $name => $object) {
@@ -155,7 +156,7 @@ class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableMo
       return array(
         'title' => 'Template Engine Pug',
         'summary' => 'Pug/Jade templates for the TemplateEngineFactory',
-        'version' => 107,
+        'version' => 108,
         'author' => 'Diktus Dreibholz (dreerr)',
         'href' => 'https://processwire.com/talk/topic/11386-module-jade-for-the-templateenginefactory/',
         'singular' => false,
