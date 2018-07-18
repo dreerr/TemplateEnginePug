@@ -15,9 +15,8 @@
  */
 
 
-require_once(dirname(dirname(__FILE__)) . '/TemplateEngineFactory/TemplateEngine.php');
-
-include 'vendor/autoload.php';
+require_once(dirname(__DIR__) . '/TemplateEngineFactory/TemplateEngine.php');
+require_once (__DIR__ . '/vendor/autoload.php' /*NoCompile*/);
 
 class TemplateEnginePug extends TemplateEngine implements Module, ConfigurableModule
 {
