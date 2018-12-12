@@ -2,7 +2,7 @@
     "name": "phug/util",
     "type": "library",
     "keywords": ["phug", "util", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
-    "description": "",
+    "description": "Phug base utils, Pug (ex-Jade) for PHP, HTML template engine structured by indentation",
     "license": "MIT",
     "homepage": "http://phug-lang.com",
     "authors": [

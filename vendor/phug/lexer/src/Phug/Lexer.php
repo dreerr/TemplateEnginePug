@@ -78,15 +78,16 @@ class Lexer implements LexerInterface, ModuleContainerInterface
     public function __construct($options = null)
     {
         $this->setOptionsDefaults($options ?: [], [
-            'lexer_state_class_name' => State::class,
-            'level'                  => 0,
-            'indent_style'           => null,
-            'indent_width'           => null,
-            'allow_mixed_indent'     => true,
-            'encoding'               => null,
-            'lexer_modules'          => [],
-            'keywords'               => [],
-            'scanners'               => Scanners::getList(),
+            'lexer_state_class_name'   => State::class,
+            'level'                    => 0,
+            'indent_style'             => null,
+            'indent_width'             => null,
+            'allow_mixed_indent'       => true,
+            'multiline_markup_enabled' => true,
+            'encoding'                 => null,
+            'lexer_modules'            => [],
+            'keywords'                 => [],
+            'scanners'                 => Scanners::getList(),
 
             //Events
             'on_lex'     => null,
@@ -194,11 +195,12 @@ class Lexer implements LexerInterface, ModuleContainerInterface
     {
         $stateClassName = $this->getOption('lexer_state_class_name');
         $lexEvent = new LexEvent($input, $path, $stateClassName, [
-            'encoding'           => $this->getOption('encoding'),
-            'indent_style'       => $this->getOption('indent_style'),
-            'indent_width'       => $this->getOption('indent_width'),
-            'allow_mixed_indent' => $this->getOption('allow_mixed_indent'),
-            'level'              => $this->getOption('level'),
+            'encoding'                 => $this->getOption('encoding'),
+            'indent_style'             => $this->getOption('indent_style'),
+            'indent_width'             => $this->getOption('indent_width'),
+            'allow_mixed_indent'       => $this->getOption('allow_mixed_indent'),
+            'multiline_markup_enabled' => $this->getOption('multiline_markup_enabled'),
+            'level'                    => $this->getOption('level'),
         ]);
 
         $this->trigger($lexEvent);

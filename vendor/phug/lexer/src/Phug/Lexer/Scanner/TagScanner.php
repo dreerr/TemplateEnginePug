@@ -21,19 +21,7 @@ class TagScanner implements ScannerInterface
         foreach ($state->scanToken(static::TOKEN_CLASS, static::PATTERN, 'i') as $token) {
             yield $token;
 
-            foreach ($state->scan(ClassScanner::class) as $subToken) {
-                yield $subToken;
-            }
-
-            foreach ($state->scan(IdScanner::class) as $subToken) {
-                yield $subToken;
-            }
-
-            foreach ($state->scan(AutoCloseScanner::class) as $subToken) {
-                yield $subToken;
-            }
-
-            foreach ($state->scan(SubScanner::class) as $subToken) {
+            foreach ($state->scan(ElementScanner::class) as $subToken) {
                 yield $subToken;
             }
         }

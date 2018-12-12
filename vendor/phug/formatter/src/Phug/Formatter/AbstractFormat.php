@@ -241,8 +241,8 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
                 $elementCode = $handler($element);
                 $debugCode = $debug ? $this->getDebugInfo($element) : '';
                 $glue = mb_strlen($debugCode) && in_array(mb_substr($elementCode, 0, 1), ["\n", "\r"])
-                        ? "\n"
-                        : '';
+                    ? "\n"
+                    : '';
 
                 return $debugCode.$glue.$elementCode;
             }
@@ -335,14 +335,16 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
         $phpTokenHandler = $this->getOption('php_token_handlers');
         $untouched = false;
         if (!$checked) {
+            // @codeCoverageIgnoreStart
             try {
                 $reflector = new \ReflectionMethod($this, 'handleVariable');
                 $untouched = (empty($phpTokenHandler) || $phpTokenHandler === [
-                            T_VARIABLE => [$this, 'handleVariable'],
-                        ]) && $reflector->getDeclaringClass()->getName() === self::class;
+                    T_VARIABLE => [$this, 'handleVariable'],
+                ]) && $reflector->getDeclaringClass()->getName() === self::class;
             } catch (\ReflectionException $exp) {
                 $untouched = false;
             }
+            // @codeCoverageIgnoreEnd
         }
 
         if ($untouched) {
@@ -826,14 +828,18 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
             }
         }
         if (count($mergeAttributes)) {
-            $attributesExpression->setValue(sprintf(
-                'array_merge(%s, %s)',
+            $attributesExpression = $this->attributesAssignmentsFromPairs([
                 $attributesExpression->getValue(),
-                implode(', ', $mergeAttributes)
-            ));
+                implode(', ', $mergeAttributes),
+            ], 'merge_attributes');
         }
         $variable = '$__pug_mixins[$__pug_mixin_name]';
         $debug = $this->getOption('debug');
+        $variablesVariable = $this->formatter->getOption('pug_variables_variable_name');
+        if (!$variablesVariable) {
+            $variablesVariable = FormatInterface::DEFAULT_VARIABLES_VARIABLE_NAME;
+            $this->formatter->setOption('pug_variables_variable_name', $variablesVariable);
+        }
 
         return $this->handleCode(implode("\n", [
             'if (!isset($__pug_mixins)) {',
@@ -882,12 +888,20 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
                 'function ($__pug_children_vars) use ('.
                     '&$__pug_mixins, '.
                     '$__pug_children, '.
+                    ($variablesVariable ? '$'.$variablesVariable.', ' : '').
                     '&$'.$this->getOption('dependencies_storage').
                 ') {'."\n".
                 '    foreach (array_keys($__pug_children_vars) as $key) {'."\n".
                 '        if (mb_substr($key, 0, 6) === \'__pug_\') {'."\n".
                 '            continue;'."\n".
                 '        }'."\n".
+                ($variablesVariable
+                    ? '        if(isset($'.$variablesVariable.'[$key])){'."\n".
+                    '            $$key = &$'.$variablesVariable.'[$key];'."\n".
+                    '            continue;'."\n".
+                    '        }'."\n"
+                    : ''
+                ).
                 '        $ref = &$GLOBALS[$key];'."\n".
                 '        $value = &$__pug_children_vars[$key];'."\n".
                 '        if($ref !== $value){'."\n".

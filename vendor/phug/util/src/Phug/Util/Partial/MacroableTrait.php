@@ -7,7 +7,7 @@ use Closure;
 use Phug\Util\OptionInterface;
 
 /**
- * Trait MacroableTrait
+ * Trait MacroableTrait.
  *
  * @see https://github.com/illuminate/support/blob/master/Traits/Macroable.php
  */
@@ -23,8 +23,8 @@ trait MacroableTrait
     /**
      * Register a custom macro.
      *
-     * @param  string $name
-     * @param  object|callable  $macro
+     * @param string          $name
+     * @param object|callable $macro
      *
      * @return void
      */
@@ -36,7 +36,8 @@ trait MacroableTrait
     /**
      * Checks if macro is registered.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return bool
      */
     public static function hasMacro($name)
@@ -47,11 +48,12 @@ trait MacroableTrait
     /**
      * Dynamically handle calls to the class.
      *
-     * @param  string  $method
-     * @param  array   $parameters
-     * @return mixed
+     * @param string $method
+     * @param array  $parameters
      *
      * @throws \BadMethodCallException
+     *
+     * @return mixed
      */
     public static function __callStatic($method, $parameters)
     {
@@ -69,11 +71,12 @@ trait MacroableTrait
     /**
      * Dynamically handle calls to the class.
      *
-     * @param  string  $method
-     * @param  array   $parameters
-     * @return mixed
+     * @param string $method
+     * @param array  $parameters
      *
      * @throws \BadMethodCallException
+     *
+     * @return mixed
      */
     public function __call($method, $parameters)
     {

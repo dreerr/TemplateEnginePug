@@ -73,6 +73,9 @@ class State implements OptionInterface
             $input,
             $this->getOption('encoding')
         );
+        if (!empty($options['path']) && method_exists($this->reader, 'setPath')) {
+            $this->reader->setPath($options['path']);
+        }
         $this->indentStyle = $this->getOption('indent_style');
         $this->indentWidth = $this->getOption('indent_width');
         $this->indentStack = [];

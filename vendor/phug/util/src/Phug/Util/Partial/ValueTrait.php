@@ -32,9 +32,13 @@ trait ValueTrait
 
     /**
      * @param mixed $value
+     *
+     * @return $this
      */
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
     }
 }

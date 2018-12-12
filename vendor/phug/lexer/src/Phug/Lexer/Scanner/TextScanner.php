@@ -19,6 +19,20 @@ class TextScanner implements ScannerInterface
 {
     const INTERPOLATION_ENABLED = true;
 
+    private function leftTrimValueIfNotAfterInterpolation(State $state, TextToken $token)
+    {
+        $text = $token->getValue();
+        if (in_array(mb_substr($text, 0, 1), [' ', "\t"])) {
+            $previous = $state->getLastToken();
+            if (!(
+                $previous instanceof TagInterpolationEndToken ||
+                $previous instanceof InterpolationEndToken
+            )) {
+                $token->setValue(mb_substr($text, 1) ?: '');
+            }
+        }
+    }
+
     private function scanInterpolationToken(State $state, TokenInterface $subToken)
     {
         if ($subToken instanceof InterpolationStartToken ||
@@ -31,24 +45,12 @@ class TextScanner implements ScannerInterface
             yield $token;
         }
         if ($subToken instanceof TextToken) {
-            $text = $subToken->getValue();
-            if (in_array(mb_substr($text, 0, 1), [' ', "\t"])) {
-                $previous = $state->getLastToken();
-                if (!(
-                    $previous instanceof TagInterpolationEndToken ||
-                    $previous instanceof InterpolationEndToken
-                )) {
-                    $subToken->setValue(mb_substr($text, 1) ?: '');
-                }
-            }
+            $this->leftTrimValueIfNotAfterInterpolation($state, $subToken);
         }
     }
 
-    public function scan(State $state)
+    private function scanInterpolationTokens(State $state, &$firstToken)
     {
-        $reader = $state->getReader();
-        $firstToken = true;
-
         if (static::INTERPOLATION_ENABLED) {
             foreach ($state->scan(InterpolationScanner::class) as $subToken) {
                 if ($firstToken) {
@@ -60,6 +62,16 @@ class TextScanner implements ScannerInterface
 
                 yield $subToken;
             }
+        }
+    }
+
+    public function scan(State $state)
+    {
+        $reader = $state->getReader();
+        $firstToken = true;
+
+        foreach ($this->scanInterpolationTokens($state, $firstToken) as $token) {
+            yield $token;
         }
 
         /** @var TextToken $token */
