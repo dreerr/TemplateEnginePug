@@ -1,5 +1,21 @@
 {
+    "name": "dreerr/template-engine-pug",
+    "type": "pw-module",
+    "description": "ProcessWire module adding Pug to the TemplateEngineFactory",
+    "keywords": [ "pug-engine", "pug", "processwire"],
+    "homepage": "https://github.com/dreerr/TemplateEnginePug",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Diktus Dreibholz",
+            "email": "dreerr@gmail.com",
+            "homepage": "https://github.com/dreerr"
+        }
+    ],
     "require": {
-        "pug-php/pug": "^3.2"
+        "php": ">=7.0",
+        "hari/pw-module": "~1.0",
+        "pug-php/pug": "^3.2",
+        "wanze/template-engine-factory": "^2.0"
     }
 }
