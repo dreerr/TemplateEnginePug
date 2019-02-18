@@ -24,14 +24,13 @@ composer require dreerr/template-engine-pug:^2.0
 ```
 
 This will install the _TemplateEnginePug_ and _TemplateEngineFactory_ modules in one step. Afterwards, don't forget
-to enable Twig as engine in the _TemplateEngineFactory_ module's configuration.
+to enable Pug as engine in the _TemplateEngineFactory_ module's configuration.
 
 ## Configuration
 
 The module offers the following configuration:
 
-* **`Template files suffix`** The suffix of the Twig template files, defaults to `twig.html`.
-* **`Provide ProcessWire API variables in Twig templates`** API variables (`$pages`, `$input`, `$config`...)
-are accessible in Twig,
-e.g. `{{ config }}` for the config API variable.
+* **`Template files suffix`** The suffix of the Pug template files, defaults to `pug`.
+* **`Provide ProcessWire API variables in  templates`** API variables (`$pages`, `$input`, `$config`...)
+are accessible in Pug.
 * **`Output indented HTML`** If checked, the output is rendered as indented HTML.
