@@ -34,3 +34,5 @@ The module offers the following configuration:
 * **`Provide ProcessWire API variables in  templates`** API variables (`$pages`, `$input`, `$config`...)
 are accessible in Pug.
 * **`Output indented HTML`** If checked, the output is rendered as indented HTML.
+* **`Debug Output`** When an error occurs at render time, you will get a complete stack trace including line and offset in the original pug source file.
+* **`Enable Profiler`** When set to true, it will output on render a timeline you can inspect in your browser to see wich token/node take longer to lex/parse/compile/render.
