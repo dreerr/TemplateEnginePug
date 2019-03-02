@@ -15,7 +15,9 @@ class TemplateEnginePug extends WireData implements Module, ConfigurableModule
     private static $defaultConfig = [
         'template_files_suffix' => 'pug',
         'api_vars_available' => 1,
-        'pretty' => 1,
+        'pretty' => 0,
+        'debug' => 0,
+        'profiler' => 0,
     ];
 
     public function __construct()
@@ -34,7 +36,7 @@ class TemplateEnginePug extends WireData implements Module, ConfigurableModule
         return [
             'title' => 'Template Engine Pug',
             'summary' => 'Pug templates for the TemplateEngineFactory',
-            'version' => 200,
+            'version' => 201,
             'author' => 'Diktus Dreibholz',
             'href' => 'https://github.com/dreerr/TemplateEnginePug/',
             'singular' => true,
@@ -98,6 +100,21 @@ class TemplateEnginePug extends WireData implements Module, ConfigurableModule
         $field->name = 'pretty';
         $field->checked = (bool) $data['pretty'];
         $wrapper->append($field);
+
+        $field = $modules->get('InputfieldCheckbox');
+        $field->label = __('Debug Output');
+        $field->description = __('When an error occurs at render time, you will get a complete stack trace including line and offset in the original pug source file.');
+        $field->name = 'debug';
+        $field->checked = (bool) $data['debug'];
+        $wrapper->append($field);
+
+        $field = $modules->get('InputfieldCheckbox');
+        $field->label = __('Enable Profiler');
+        $field->description = __('When set to true, it will output on render a timeline you can inspect in your browser to see wich token/node take longer to lex/parse/compile/render.');
+        $field->name = 'profiler';
+        $field->checked = (bool) $data['profiler'];
+        $wrapper->append($field);
+
         return $wrapper;
     }
 }

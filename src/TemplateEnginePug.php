@@ -12,7 +12,7 @@ class TemplateEnginePug extends TemplateEngineBase
     const COMPILE_DIR = 'TemplateEnginePug_compile/';
 
     /**
-     * @var \Pug
+     * @var \Phug\Renderer
      */
     protected $pug;
 
@@ -34,7 +34,7 @@ class TemplateEnginePug extends TemplateEngineBase
     /**
      * @throws \ProcessWire\WireException
      *
-     * @return \Pug
+     * @return \Phug\Renderer
      */
     protected function getPug()
     {
@@ -48,13 +48,15 @@ class TemplateEnginePug extends TemplateEngineBase
     /**
      * @throws \ProcessWire\WireException
      *
-     * @return \Pug
+     * @return \Phug
      */
     protected function buildPug()
     {
-      $this->pug = new \Pug([
+      $this->pug = new \Phug\Renderer([
         'cache' => $this->wire('config')->paths->assets . 'cache/' . self::COMPILE_DIR,
         'pretty' => $this->moduleConfig['pretty'],
+        'debug' => $this->moduleConfig['debug'],
+        'enable_profiler' => $this->moduleConfig['profiler'],
       ]);
 
       $this->initPug($this->pug);
@@ -68,9 +70,9 @@ class TemplateEnginePug extends TemplateEngineBase
      * Use this method to customize the passed $pug instance,
      * e.g. adding functions and filters.
      *
-     * @param \Pug $pug
+     * @param \Phug\Renderer $pug
      */
-    protected function ___initPug(\Pug $pug)
+    protected function ___initPug(\Phug\Renderer $pug)
     {
     }
 
