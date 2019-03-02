@@ -76,15 +76,6 @@ class TemplateEnginePug extends TemplateEngineBase
     {
     }
 
-    private function isDebug()
-    {
-        if ($this->moduleConfig['debug'] === 'config') {
-            return $this->wire('config')->debug;
-        }
-
-        return (bool) $this->moduleConfig['debug'];
-    }
-
     /**
      * @param array $data
      *
