@@ -25,7 +25,7 @@ class TemplateEnginePug extends TemplateEngineBase
         $data = $this->getData($data);
 
         try {
-          return $this->getPug()->renderFile($template, $data);
+          $this->getPug()->displayFile($template, $data);
         } catch (Exception $e) {
           throw new WireException($e->getMessage());
         }
@@ -53,7 +53,7 @@ class TemplateEnginePug extends TemplateEngineBase
     protected function buildPug()
     {
       $this->pug = new \Phug\Renderer([
-        'cache' => $this->wire('config')->paths->assets . 'cache/' . self::COMPILE_DIR,
+        'cache_dir' => $this->wire('config')->paths->assets . 'cache/' . self::COMPILE_DIR,
         'pretty' => $this->moduleConfig['pretty'],
         'debug' => $this->moduleConfig['debug'],
         'enable_profiler' => $this->moduleConfig['profiler'],
