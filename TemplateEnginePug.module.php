@@ -16,8 +16,9 @@ class TemplateEnginePug extends WireData implements Module, ConfigurableModule
         'template_files_suffix' => 'pug',
         'api_vars_available' => 1,
         'pretty' => 0,
-        'debug' => 0,
+        'debug' => 1,
         'profiler' => 0,
+        'optimizer' => 0,
     ];
 
     public function __construct()
@@ -36,7 +37,7 @@ class TemplateEnginePug extends WireData implements Module, ConfigurableModule
         return [
             'title' => 'Template Engine Pug',
             'summary' => 'Pug templates for the TemplateEngineFactory',
-            'version' => 201,
+            'version' => 203,
             'author' => 'Diktus Dreibholz',
             'href' => 'https://github.com/dreerr/TemplateEnginePug/',
             'singular' => true,
@@ -113,6 +114,13 @@ class TemplateEnginePug extends WireData implements Module, ConfigurableModule
         $field->description = __('When set to true, it will output on render a timeline you can inspect in your browser to see wich token/node take longer to lex/parse/compile/render.');
         $field->name = 'profiler';
         $field->checked = (bool) $data['profiler'];
+        $wrapper->append($field);
+
+        $field = $modules->get('InputfieldCheckbox');
+        $field->label = __('Use Optimizer');
+        $field->description = __('The Optimizer is a tool that avoid to load the Phug engine if a file is available in the cache.');
+        $field->name = 'optimizer';
+        $field->checked = (bool) $data['optimizer'];
         $wrapper->append($field);
 
         return $wrapper;
