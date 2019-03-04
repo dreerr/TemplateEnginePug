@@ -12,68 +12,23 @@ class TemplateEnginePug extends TemplateEngineBase
     const COMPILE_DIR = 'TemplateEnginePug_compile/';
 
     /**
-     * @var \Phug\Renderer
-     */
-    protected $pug;
-
-    /**
      * {@inheritdoc}
      */
     public function render($template, $data = [])
     {
         $template = $this->getTemplatesRootPath() . $this->normalizeTemplate($template);
         $data = $this->getData($data);
-
-        try {
-          $this->getPug()->displayFile($template, $data);
-        } catch (Exception $e) {
-          throw new WireException($e->getMessage());
+        $options = [
+          'cache_dir' => $this->wire('config')->paths->assets . 'cache/' . self::COMPILE_DIR,
+          'pretty' => $this->moduleConfig['pretty'],
+          'debug' => $this->moduleConfig['debug'],
+          'enable_profiler' => $this->moduleConfig['profiler'],
+        ];
+        if($this->moduleConfig['optimizer']) {
+          return \Phug\Optimizer::call('renderFile', [$template, $data], $options);
+        } else {
+          return \Phug::renderFile($template, $data, $options);
         }
-    }
-
-    /**
-     * @throws \ProcessWire\WireException
-     *
-     * @return \Phug\Renderer
-     */
-    protected function getPug()
-    {
-        if ($this->pug === null) {
-            return $this->buildPug();
-        }
-
-        return $this->pug;
-    }
-
-    /**
-     * @throws \ProcessWire\WireException
-     *
-     * @return \Phug
-     */
-    protected function buildPug()
-    {
-      $this->pug = new \Phug\Renderer([
-        'cache_dir' => $this->wire('config')->paths->assets . 'cache/' . self::COMPILE_DIR,
-        'pretty' => $this->moduleConfig['pretty'],
-        'debug' => $this->moduleConfig['debug'],
-        'enable_profiler' => $this->moduleConfig['profiler'],
-      ]);
-
-      $this->initPug($this->pug);
-
-      return $this->pug;
-    }
-
-    /**
-     * Hookable method called after Pug has been initialized.
-     *
-     * Use this method to customize the passed $pug instance,
-     * e.g. adding functions and filters.
-     *
-     * @param \Phug\Renderer $pug
-     */
-    protected function ___initPug(\Phug\Renderer $pug)
-    {
     }
 
     /**
